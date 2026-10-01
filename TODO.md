@@ -3,9 +3,9 @@
 Updated after every session. Oldest tasks first; current work at top.
 
 ## active
-- [ ] Figure out GitHub SSH auth — key added but `ssh -T git@github.com` denied (publickey)
-  - no private key in ~/.ssh/id_*? (checked 2026-09-27)
-  - regenerate ed25519 key with ssh-keygen, add public half to GitHub?
+- [x] GitHub SSH auth — key generated + added to GitHub, `ssh -T git@github.com` now authenticates ("You've successfully authenticated")
+  - [ ] Create remote repo `JustJamin/notes` / `JustJamin/sysadmin` on GitHub and add as origin
+  - [ ] Push local repo to origin
 - [ ] etckeeper — install and init (tracks /etc in git)
 - [ ] SSH hardening — set `PasswordAuthentication no`, `PermitRootLogin no` (verify key login first!)
 - [ ] ufw firewall — default deny incoming, SSH only from tailscale0 / 100.64.0.0/10
@@ -22,7 +22,10 @@ Updated after every session. Oldest tasks first; current work at top.
 - [x] Create ~/repo/sysadmin project folder + README.md
 - [x] Create ~/notes/ (MACHINE.md, SETUP.md, README.md)
 - [x] Install git (2.47.3)
+- [x] GitHub SSH key working — `ssh -T` authenticates as JustJamin
 
 ## blocked
 - sudo requires password — some installs need `sudo`; resolve via `sudo -S` or add nopasswd for specific commands
-- GitHub SSH key not working yet — see github.md
+
+## new — 2026-10-01
+- [ ] Laptop runs with lid shut — configure systemd-logind (HandleLidSwitch=ignore / HandleLidSwitchDocked=ignore) or acpi settings so machine doesn't suspend on close

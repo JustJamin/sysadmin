@@ -19,3 +19,7 @@
 - GitHub account `JustJamin`; lenovo SSH key added to GitHub — but `ssh -T` still `Permission denied (publickey)`
 - No private key found in `~/.ssh/id_*` — key may not exist or may be named differently
 - User said: do not fight with git right now; notes live as plain local files
+
+## 2026-10-01
+- Added "laptop runs with lid shut" to TODO (active)
+- User asked for SSH key generation for GitHub — paused pending clarification
