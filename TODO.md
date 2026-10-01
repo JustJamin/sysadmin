@@ -23,9 +23,7 @@ Updated after every session. Oldest tasks first; current work at top.
 - [x] Create ~/notes/ (MACHINE.md, SETUP.md, README.md)
 - [x] Install git (2.47.3)
 - [x] GitHub SSH key working — `ssh -T` authenticates as JustJamin
+- [x] Laptop runs with lid shut — logind drop-in (lid ignored on AC + battery), console blanks after 60s (2026-10-01; physical lid test pending)
 
 ## blocked
 - sudo requires password — some installs need `sudo`; resolve via `sudo -S` or add nopasswd for specific commands
-
-## new — 2026-10-01
-- [ ] Laptop runs with lid shut — configure systemd-logind (HandleLidSwitch=ignore / HandleLidSwitchDocked=ignore) or acpi settings so machine doesn't suspend on close
