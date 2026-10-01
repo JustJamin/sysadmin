@@ -4,8 +4,8 @@ Updated after every session. Oldest tasks first; current work at top.
 
 ## active
 - [x] GitHub SSH auth — key generated + added to GitHub, `ssh -T git@github.com` now authenticates ("You've successfully authenticated")
-  - [ ] Create remote repo `JustJamin/notes` / `JustJamin/sysadmin` on GitHub and add as origin
-  - [ ] Push local repo to origin
+  - [x] Create remote repo `JustJamin/sysadmin` on GitHub and add as origin
+  - [x] Push local repo to origin (main branch)
 - [ ] etckeeper — install and init (tracks /etc in git)
 - [ ] SSH hardening — set `PasswordAuthentication no`, `PermitRootLogin no` (verify key login first!)
 - [ ] ufw firewall — default deny incoming, SSH only from tailscale0 / 100.64.0.0/10

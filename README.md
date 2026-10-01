@@ -36,4 +36,5 @@ sysadmin/
 1. Read TODO.md before starting a session (see what's open).
 2. Do work; note results in LOG.md (date, what changed, what's blocked).
 3. Update TODO.md (check off / move items / add new ones).
-4. If a step breaks SSH access, document it here FIRST — don't assume you can recover remotely.
+4. Commit after every change (small, focused commits) and push to origin (`git push`) regularly — at least at the end of each task.
+5. If a step breaks SSH access, document it here FIRST — don't assume you can recover remotely.
