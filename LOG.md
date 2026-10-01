@@ -30,5 +30,6 @@
   - `/etc/default/grub.d/console-blank.cfg` — adds `consoleblank=60` to kernel cmdline; `update-grub` run; tty1 blanking set to 1 min live via setterm
   - Repo copies in `configs/`; installer `scripts/apply-lid-ignore.sh` (run with sudo from a real terminal — `!` in Claude has no tty for the sudo password)
   - Verified: logind reports `ignore` x3; grub.cfg contains consoleblank=60
-  - Pending: physical test (close lid while SSH'd in from phone); consoleblank=60 in /sys after next reboot
+  - Lid test PASSED: closed lid while SSH'd in from phone, session stayed connected
+  - Pending: confirm consoleblank=60 in /sys after next reboot
   - Undo: delete both drop-ins, `sudo systemctl reload systemd-logind`, `sudo update-grub`
