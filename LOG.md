@@ -72,3 +72,8 @@
 - Added `## home_state dependencies` to TODO.md. These are host setup items for `~/repo/home_state`, which uses XIAO ESP32-C6 BLE boards, a scanner and Postgres:
   - dialout group (to flash the ESP32 on /dev/ttyACM0), apt build deps for ESP-IDF, the ESP-IDF toolchain (user-level, ~/esp), Docker + Compose, and single-node k3s
   - home_state's README marks itself as blocked on these items
+- home_state step 1 host deps done:
+  - jamin added to `dialout` (takes effect after re-login; until then, use `sg dialout -c ...`)
+  - apt: flex bison gperf python3-pip python3-venv cmake ninja-build ccache libffi-dev dfu-util
+  - ESP-IDF v6.1 cloned to `~/esp/esp-idf` (shallow), `./install.sh esp32c6` → tools in `~/.espressif`. Use it with `. ~/esp/esp-idf/export.sh`
+  - Removal: `rm -rf ~/esp ~/.espressif`
