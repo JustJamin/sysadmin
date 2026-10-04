@@ -26,6 +26,7 @@ sysadmin/
 - **etckeeper** (installed 2026-10-04) — tracks /etc in git, auto-commits on apt + daily. Local only: never add a remote (shadow, SSH host keys).
 - **ufw** (enabled 2026-10-04) — deny incoming; allow everything on `tailscale0` (any tailnet device) + 41641/udp. Access control = Tailscale device approval/ACLs + SSH keys.
 - **fail2ban** — skipped (2026-10-04): SSH is tailnet-only + key-only, so nothing to brute-force. Reconsider if any service is ever exposed to LAN/internet.
+- **unattended-upgrades** (enabled 2026-10-04) — auto-installs Debian security + Tailscale updates; reboots 04:00 only if required. Config: `configs/etc/apt/apt.conf.d/`.
 - **restic** (not yet installed) — backups (NOT git). See ~/notes/SETUP.md.
 - **GitHub account**: JustJamin — SSH auth works; this repo pushes to `git@github.com:JustJamin/sysadmin.git`. See github.md.
 

@@ -58,3 +58,13 @@
   - Adding a new tailnet device: no firewall change needed; add its SSH key to ~/.ssh/authorized_keys
 
 - Dropped fail2ban from TODO: SSH unreachable from LAN/internet (ufw) and password auth off — revisit only if something is exposed publicly
+- unattended-upgrades 2.12 via `scripts/apply-unattended-upgrades.sh`
+  - `/etc/apt/apt.conf.d/20auto-upgrades` (daily lists + upgrade, autoclean 7d) and `52unattended-upgrades-local` (overrides; package's 50unattended-upgrades untouched)
+  - Origins: `#clear` + Debian-Security (trixie-security) + Tailscale only — dry run confirmed "Allowed origins" = exactly these two, no errors
+  - Auto-reboot 04:00 only if required; WithUsers=true (tty1 session is permanent)
+  - Timers: apt-daily (~2x/day), apt-daily-upgrade (~06:00 + random delay)
+  - Where to look: `sudo cat /var/log/unattended-upgrades/unattended-upgrades.log`; reboots: `journalctl -b -1 -n 50` / `last reboot`
+  - Side effect: Tailscale auto-update restarts tailscaled → SSH drops for a few seconds
+  - Pending: check log after first real run (2026-10-05)
+  - Rollback: remove both files, `sudo apt purge unattended-upgrades`
+
