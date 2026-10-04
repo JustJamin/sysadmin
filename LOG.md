@@ -95,3 +95,4 @@
   - Rollback: `sudo /usr/local/bin/k3s-uninstall.sh`; `sudo ufw delete allow from 10.42.0.0/16`; same for 10.43.0.0/16
 - All home_state host dependencies now done (dialout, ESP-IDF deps + toolchain v6.1, Docker, k3s)
 
+- Added TODO: local image registry (registry:2 on 127.0.0.1:5000) for home_state step 5, because k3s's containerd can't see Docker-built images. Chosen over running `sudo k3s ctr images import` on every build, and over GHCR.

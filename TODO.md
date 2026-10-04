@@ -21,6 +21,11 @@ Host setup needed by `~/repo/home_state` (BLE sensor boards → Postgres). That 
 - [x] ESP-IDF toolchain v6.1, target esp32c6 (2026-10-04). It's a user-level install in `~/esp/esp-idf` and `~/.espressif` and needs no sudo. (home_state step 1)
 - [x] Docker + Compose — Debian docker.io 26.1.5 + compose 2.26.1; daemon.json default bind 127.0.0.1 (2026-10-04; LAN bind test passed) (home_state step 4)
 - [x] k3s single-node — v1.36.5+k3s1, traefik + servicelb disabled, `local-path` default SC (2026-10-04; PVC + DNS test passed) (home_state step 5)
+- [ ] Local image registry for k3s:
+  - Run `registry:2` in Docker on `127.0.0.1:5000` only, with `--restart unless-stopped` and a named volume.
+  - home_state pushes `localhost:5000/home_state-scanner`, and k3s pulls it.
+  - Check that k3s's containerd pulls plain HTTP from `localhost:5000`. If it doesn't, add a `localhost:5000` mirror with an `http://` endpoint in `/etc/rancher/k3s/registries.yaml` and restart k3s.
+  - Added 2026-10-04. (home_state step 5)
 
 ## done
 - [x] Baseline audit — full machine snapshot 2026-09-26
