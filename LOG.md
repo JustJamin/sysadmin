@@ -96,3 +96,10 @@
 - All home_state host dependencies now done (dialout, ESP-IDF deps + toolchain v6.1, Docker, k3s)
 
 - Added TODO: local image registry (registry:2 on 127.0.0.1:5000) for home_state step 5, because k3s's containerd can't see Docker-built images. Chosen over running `sudo k3s ctr images import` on every build, and over GHCR.
+- Local image registry for home_state k3s (step 5) via `scripts/run-local-registry.sh` (no sudo; idempotent)
+  - `registry:2` container `registry`, `-p 127.0.0.1:5000:5000`, volume `registry-data`, `--restart unless-stopped`
+  - Test: pushed busybox as `localhost:5000/registry-test:1`; k3s pod with that image + `imagePullPolicy: Always` pulled it ("Successfully pulled … in 512ms") and ran
+  - registries.yaml NOT needed — k3s's containerd treats localhost registries as plain HTTP, and it runs in the host netns so localhost:5000 = this registry
+  - Cleaned up: test pod deleted, registry recreated empty (deletes disabled by default)
+  - Remove: `docker rm -f registry && docker volume rm registry-data`
+
