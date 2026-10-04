@@ -83,4 +83,15 @@
   - jamin added to `docker` group (root-equivalent)
   - Verified: hello-world OK without sudo (new session); `-p 18080:80` bound to 127.0.0.1:18080 only — HTTP 200 on localhost, no answer on 192.168.0.18
   - Rollback: `sudo apt purge docker.io docker-compose docker-buildx && sudo rm -rf /etc/docker /var/lib/docker`
+- k3s via `scripts/install-k3s.sh` (for home_state step 5)
+  - v1.36.5+k3s1 (stable channel, get.k3s.io); own containerd 2.3.4, separate from Docker's
+  - `/etc/rancher/k3s/config.yaml` installed before first start: kubeconfig 0600, `disable: [traefik, servicelb]`, kube-proxy `nodeport-addresses=127.0.0.1/32,100.79.164.117/32`
+  - ufw: `allow from 10.42.0.0/16` (pods), `allow from 10.43.0.0/16` (services). 6443/10250 listen on * but are normal host ports → ufw blocks them from LAN
+  - Verified: node Ready; coredns, local-path-provisioner, metrics-server Running; no traefik/svclb; all services ClusterIP
+  - Verified: 1Gi local-path PVC Bound, pod wrote/read file, in-cluster DNS (10.43.0.10) resolved kubernetes.default; PV auto-deleted after cleanup
+  - Memory after install: ~3.9 GiB available (k3s ≈ 0.5 GiB)
+  - Gotcha: k3s's kubectl reads /etc/rancher/k3s/k3s.yaml (root-only) unless `KUBECONFIG` is set → added `export KUBECONFIG="$HOME/.kube/config"` to ~/.bashrc (script now does this too)
+  - Not auto-updated — added TODO
+  - Rollback: `sudo /usr/local/bin/k3s-uninstall.sh`; `sudo ufw delete allow from 10.42.0.0/16`; same for 10.43.0.0/16
+- home_state dependencies now all done except ESP-IDF toolchain install (user-level, pending)
 

@@ -11,6 +11,7 @@ Updated after every session. Oldest tasks first; current work at top.
 - [ ] offsite backup backend (B2 / S3 / rsync.net)
 - [ ] restore test from backup
 - [ ] dashboard / monitoring seed (disk, mem, journal)
+- [ ] k3s updates are manual (not covered by unattended-upgrades) — re-run `curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=stable sh -` periodically
 - [ ] Tailscale polish (Tailscale SSH, MagicDNS)
 
 ## home_state dependencies
@@ -19,7 +20,7 @@ Host setup needed by `~/repo/home_state` (BLE sensor boards → Postgres). That 
 - [x] apt build deps for ESP-IDF: `git wget flex bison gperf python3-pip python3-venv cmake ninja-build ccache libffi-dev libssl-dev dfu-util libusb-1.0-0` (home_state step 1)
 - [x] ESP-IDF toolchain v6.1, target esp32c6 (2026-10-04). It's a user-level install in `~/esp/esp-idf` and `~/.espressif` and needs no sudo. (home_state step 1)
 - [x] Docker + Compose — Debian docker.io 26.1.5 + compose 2.26.1; daemon.json default bind 127.0.0.1 (2026-10-04; LAN bind test passed) (home_state step 4)
-- [ ] k3s single-node with the `local-path` storage class (home_state step 5)
+- [x] k3s single-node — v1.36.5+k3s1, traefik + servicelb disabled, `local-path` default SC (2026-10-04; PVC + DNS test passed) (home_state step 5)
 
 ## done
 - [x] Baseline audit — full machine snapshot 2026-09-26

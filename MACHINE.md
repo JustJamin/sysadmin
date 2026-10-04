@@ -12,6 +12,7 @@
 - Firewall: ufw — deny incoming/routed, allow outgoing; allow all in on tailscale0 + 41641/udp. LAN (192.168.0.18) cannot reach SSH.
 - Updates: unattended-upgrades — Debian-Security + Tailscale daily (~06:00); auto-reboot 04:00 when required. Point releases + Node.js manual (`sudo apt update && sudo apt upgrade`).
 - Docker: docker.io 26.1.5 + compose 2.26.1 + buildx (Debian). /etc/docker/daemon.json: published ports default to 127.0.0.1, log-driver local. jamin in docker group (root-equivalent).
+- k3s: v1.36.5+k3s1 single node (own containerd). /etc/rancher/k3s/config.yaml: traefik + servicelb disabled, NodePorts on 127.0.0.1 + 100.79.164.117 only. Default SC local-path. Pods 10.42/16, services 10.43/16 (ufw-allowed). API :6443 tailnet/localhost only. kubectl as jamin via ~/.kube/config (KUBECONFIG in ~/.bashrc).
 - Lid: close is ignored (AC + battery) via /etc/systemd/logind.conf.d/10-lid-ignore.conf
 - /etc: tracked by etckeeper (local git in /etc/.git, root-only, NO remote — contains secrets); daily etckeeper.timer + apt hooks
 - Console: blanks after 60s idle (consoleblank=60 via /etc/default/grub.d/console-blank.cfg)

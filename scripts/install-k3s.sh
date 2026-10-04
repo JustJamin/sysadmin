@@ -19,6 +19,8 @@ curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=stable sh -
 # kubectl for jamin without sudo.
 install -d -m700 -o jamin -g jamin /home/jamin/.kube
 install -m600 -o jamin -g jamin /etc/rancher/k3s/k3s.yaml /home/jamin/.kube/config
+# k3s's kubectl ignores ~/.kube/config unless KUBECONFIG is set.
+grep -q 'KUBECONFIG=' /home/jamin/.bashrc || printf '\n# k3s: kubectl reads /etc/rancher/k3s/k3s.yaml (root-only) unless KUBECONFIG is set\nexport KUBECONFIG="$HOME/.kube/config"\n' >> /home/jamin/.bashrc
 
 echo "--- waiting for node Ready (up to 3 min)..."
 i=0

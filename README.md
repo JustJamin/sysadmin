@@ -28,6 +28,7 @@ sysadmin/
 - **fail2ban** — skipped (2026-10-04): SSH is tailnet-only + key-only, so nothing to brute-force. Reconsider if any service is ever exposed to LAN/internet.
 - **unattended-upgrades** (enabled 2026-10-04) — auto-installs Debian security + Tailscale updates; reboots 04:00 only if required. Config: `configs/etc/apt/apt.conf.d/`.
 - **Docker** (2026-10-04) — Debian packages (security updates via unattended-upgrades). Published ports bypass ufw, so `daemon.json` binds them to 127.0.0.1 by default; use `-p 100.79.164.117:PORT:PORT` for tailnet-only.
+- **k3s** (2026-10-04) — single node, installed via get.k3s.io (stable). traefik + servicelb disabled and NodePorts limited to localhost + tailnet, since both would bypass ufw. Not auto-updated.
 - **restic** (not yet installed) — backups (NOT git). See ~/notes/SETUP.md.
 - **GitHub account**: JustJamin — SSH auth works; this repo pushes to `git@github.com:JustJamin/sysadmin.git`. See github.md.
 
