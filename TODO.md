@@ -7,7 +7,6 @@ Updated after every session. Oldest tasks first; current work at top.
   - [x] Create remote repo `JustJamin/sysadmin` on GitHub and add as origin
   - [x] Push local repo to origin (main branch)
 - [ ] Backup SSH key from a second device (phone is currently the only key)
-- [ ] ufw firewall — default deny incoming, allow 22 on `tailscale0` interface (covers SSH + SFTP from any current/future tailnet device; new devices just need their own key in authorized_keys)
 - [ ] fail2ban for sshd
 - [ ] unattended-upgrades (security only)
 - [ ] restic local repo + systemd timer
@@ -25,6 +24,7 @@ Updated after every session. Oldest tasks first; current work at top.
 - [x] Laptop runs with lid shut — logind drop-in (lid ignored on AC + battery), console blanks after 60s (2026-10-01; lid test passed — SSH stayed connected)
 - [x] etckeeper — installed 1.18.22, /etc in local git (2026-10-04)
 - [x] SSH hardening — key-only, no root, AllowUsers jamin (2026-10-04; new login + password-denied tests passed)
+- [x] ufw firewall — deny incoming; allow all on tailscale0 + 41641/udp (2026-10-04; new session + direct tailscale ping OK)
 
 ## blocked
 - sudo requires password — some installs need `sudo`; resolve via `sudo -S` or add nopasswd for specific commands

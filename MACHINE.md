@@ -9,6 +9,7 @@
 - Tailscale: 100.79.164.117 (lenovo)
 - SSH: key-only (password + root login disabled, AllowUsers jamin) via /etc/ssh/sshd_config.d/10-hardening.conf; one key in authorized_keys = Termius on phone (SHA256:bMBcakii…)
 - Access: Tailscale + Termius from phone
+- Firewall: ufw — deny incoming/routed, allow outgoing; allow all in on tailscale0 + 41641/udp. LAN (192.168.0.18) cannot reach SSH.
 - Lid: close is ignored (AC + battery) via /etc/systemd/logind.conf.d/10-lid-ignore.conf
 - /etc: tracked by etckeeper (local git in /etc/.git, root-only, NO remote — contains secrets); daily etckeeper.timer + apt hooks
 - Console: blanks after 60s idle (consoleblank=60 via /etc/default/grub.d/console-blank.cfg)

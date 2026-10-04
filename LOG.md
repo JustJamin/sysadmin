@@ -49,4 +49,11 @@
   - Undo: `sudo rm /etc/ssh/sshd_config.d/10-hardening.conf && sudo systemctl reload ssh`
   - Note: sshd still listens on 0.0.0.0:22 — restrict to Tailscale with ufw (next)
   - Risk: phone is the only key — consider a backup key from a second device
+- ufw firewall via `scripts/apply-ufw.sh`
+  - Rules: default deny incoming + routed, allow outgoing; `allow in on tailscale0` (all ports — SSH/SFTP/Taildrop/future services); `allow 41641/udp` (Tailscale direct)
+  - Applied with 5-min dead-man timer (`systemd-run --unit=ufw-deadman ... ufw disable`); new Termius session worked, timer stopped
+  - Verified: ENABLED=yes in /etc/ufw/ufw.conf; `tailscale ping poco-f7-ultra` → direct via 192.168.0.35 (not DERP)
+  - Not yet tested: LAN SSH to 192.168.0.18 blocked (phone with Tailscale off); `sudo apt update` still works
+  - Rollback: `sudo ufw disable`
+  - Adding a new tailnet device: no firewall change needed; add its SSH key to ~/.ssh/authorized_keys
 
