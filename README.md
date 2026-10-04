@@ -23,11 +23,11 @@ sysadmin/
 
 ## Tools / choices
 
-- **etckeeper** (not yet installed) — tracks /etc in git, auto-commits on apt. Preferred over manual /etc copies.
+- **etckeeper** (installed 2026-10-04) — tracks /etc in git, auto-commits on apt + daily. Local only: never add a remote (shadow, SSH host keys).
 - **ufw** (not yet installed) — firewall; allow SSH only from Tailscale interface / 100.64.0.0/10.
 - **fail2ban** (not yet installed) — brute-force defense.
 - **restic** (not yet installed) — backups (NOT git). See ~/notes/SETUP.md.
-- **GitHub account**: JustJamin — SSH key added, but `ssh -T git@github.com` still denied (publickey). See github.md.
+- **GitHub account**: JustJamin — SSH auth works; this repo pushes to `git@github.com:JustJamin/sysadmin.git`. See github.md.
 
 ---
 

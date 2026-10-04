@@ -33,3 +33,12 @@
   - Lid test PASSED: closed lid while SSH'd in from phone, session stayed connected
   - Pending: confirm consoleblank=60 in /sys after next reboot
   - Undo: delete both drop-ins, `sudo systemctl reload systemd-logind`, `sudo update-grub`
+
+## 2026-10-04
+- etckeeper installed (1.18.22-2) via `scripts/install-etckeeper.sh`
+  - VCS=git; `/etc/.git` is `drwx------ root:root`; first commit `654c60e Initial commit`
+  - No remotes — /etc repo must stay local (contains /etc/shadow, SSH host private keys)
+  - Repo-local identity: `root (lenovo) <root@lenovo>`
+  - etckeeper.timer enabled (daily ~08:14) + apt pre/post hooks
+  - Useful: `sudo git -C /etc log --oneline`, `sudo git -C /etc status -s`, `sudo etckeeper commit "msg"` after manual /etc edits
+- README: fixed stale etckeeper + GitHub status lines
