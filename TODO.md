@@ -7,7 +7,6 @@ Updated after every session. Oldest tasks first; current work at top.
   - [x] Create remote repo `JustJamin/sysadmin` on GitHub and add as origin
   - [x] Push local repo to origin (main branch)
 - [ ] Backup SSH key from a second device (phone is currently the only key)
-- [ ] fail2ban for sshd
 - [ ] unattended-upgrades (security only)
 - [ ] restic local repo + systemd timer
 - [ ] offsite backup backend (B2 / S3 / rsync.net)

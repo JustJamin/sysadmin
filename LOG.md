@@ -57,3 +57,4 @@
   - Rollback: `sudo ufw disable`
   - Adding a new tailnet device: no firewall change needed; add its SSH key to ~/.ssh/authorized_keys
 
+- Dropped fail2ban from TODO: SSH unreachable from LAN/internet (ufw) and password auth off — revisit only if something is exposed publicly
