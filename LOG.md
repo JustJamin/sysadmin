@@ -41,4 +41,12 @@
   - Repo-local identity: `root (lenovo) <root@lenovo>`
   - etckeeper.timer enabled (daily ~08:14) + apt pre/post hooks
   - Useful: `sudo git -C /etc log --oneline`, `sudo git -C /etc status -s`, `sudo etckeeper commit "msg"` after manual /etc edits
-- README: fixed stale etckeeper + GitHub status lines
+- README: fixed stale etckeeper + GitHub status lines- SSH hardening via `scripts/apply-ssh-hardening.sh`
+  - Pre-check: journal showed all logins over last 7 days were `Accepted publickey` with Termius key SHA256:bMBcakii… (matches only key in authorized_keys)
+  - Drop-in `/etc/ssh/sshd_config.d/10-hardening.conf`: PasswordAuthentication no, KbdInteractiveAuthentication no, PermitRootLogin no, PermitEmptyPasswords no, AuthenticationMethods publickey, AllowUsers jamin, MaxAuthTries 3, LoginGraceTime 30, X11Forwarding no
+  - `sshd -t` passed; `systemctl reload ssh`; etckeeper committed
+  - Verified: new Termius login works; `ssh -o PubkeyAuthentication=no jamin@localhost` → `Permission denied (publickey)`
+  - Undo: `sudo rm /etc/ssh/sshd_config.d/10-hardening.conf && sudo systemctl reload ssh`
+  - Note: sshd still listens on 0.0.0.0:22 — restrict to Tailscale with ufw (next)
+  - Risk: phone is the only key — consider a backup key from a second device
+

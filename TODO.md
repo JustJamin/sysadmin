@@ -6,7 +6,7 @@ Updated after every session. Oldest tasks first; current work at top.
 - [x] GitHub SSH auth — key generated + added to GitHub, `ssh -T git@github.com` now authenticates ("You've successfully authenticated")
   - [x] Create remote repo `JustJamin/sysadmin` on GitHub and add as origin
   - [x] Push local repo to origin (main branch)
-- [ ] SSH hardening — set `PasswordAuthentication no`, `PermitRootLogin no` (verify key login first!)
+- [ ] Backup SSH key from a second device (phone is currently the only key)
 - [ ] ufw firewall — default deny incoming, SSH only from tailscale0 / 100.64.0.0/10
 - [ ] fail2ban for sshd
 - [ ] unattended-upgrades (security only)
@@ -24,6 +24,7 @@ Updated after every session. Oldest tasks first; current work at top.
 - [x] GitHub SSH key working — `ssh -T` authenticates as JustJamin
 - [x] Laptop runs with lid shut — logind drop-in (lid ignored on AC + battery), console blanks after 60s (2026-10-01; lid test passed — SSH stayed connected)
 - [x] etckeeper — installed 1.18.22, /etc in local git (2026-10-04)
+- [x] SSH hardening — key-only, no root, AllowUsers jamin (2026-10-04; new login + password-denied tests passed)
 
 ## blocked
 - sudo requires password — some installs need `sudo`; resolve via `sudo -S` or add nopasswd for specific commands
