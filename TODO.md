@@ -18,7 +18,7 @@ Host setup needed by `~/repo/home_state` (BLE sensor boards → Postgres). That 
 - [x] Add jamin to `dialout`, so the XIAO ESP32-C6 on `/dev/ttyACM0` can be flashed without root. Run `sudo usermod -aG dialout jamin`, then log out and back in. (home_state step 1)
 - [x] apt build deps for ESP-IDF: `git wget flex bison gperf python3-pip python3-venv cmake ninja-build ccache libffi-dev libssl-dev dfu-util libusb-1.0-0` (home_state step 1)
 - [x] ESP-IDF toolchain v6.1, target esp32c6 (2026-10-04). It's a user-level install in `~/esp/esp-idf` and `~/.espressif` and needs no sudo. (home_state step 1)
-- [ ] Docker + Compose. Published ports bypass ufw, so bind services to 127.0.0.1. (home_state step 4)
+- [x] Docker + Compose — Debian docker.io 26.1.5 + compose 2.26.1; daemon.json default bind 127.0.0.1 (2026-10-04; LAN bind test passed) (home_state step 4)
 - [ ] k3s single-node with the `local-path` storage class (home_state step 5)
 
 ## done

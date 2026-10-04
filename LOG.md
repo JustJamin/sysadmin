@@ -77,3 +77,10 @@
   - apt: flex bison gperf python3-pip python3-venv cmake ninja-build ccache libffi-dev dfu-util
   - ESP-IDF v6.1 cloned to `~/esp/esp-idf` (shallow), `./install.sh esp32c6` → tools in `~/.espressif`. Use it with `. ~/esp/esp-idf/export.sh`
   - Removal: `rm -rf ~/esp ~/.espressif`
+- Docker via `scripts/install-docker.sh` (for home_state step 4)
+  - Debian packages: docker.io 26.1.5+dfsg1-9+deb13u1, docker-compose 2.26.1-4, docker-buildx 0.13.1 — covered by Debian-Security unattended-upgrades
+  - `/etc/docker/daemon.json`: `"ip": "127.0.0.1"` (default bind for published ports — they bypass ufw), `"log-driver": "local"`
+  - jamin added to `docker` group (root-equivalent)
+  - Verified: hello-world OK without sudo (new session); `-p 18080:80` bound to 127.0.0.1:18080 only — HTTP 200 on localhost, no answer on 192.168.0.18
+  - Rollback: `sudo apt purge docker.io docker-compose docker-buildx && sudo rm -rf /etc/docker /var/lib/docker`
+
