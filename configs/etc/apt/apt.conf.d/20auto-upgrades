@@ -1,0 +1,4 @@
+// Enable apt's daily jobs (lenovo). Settings for what gets upgraded: 52unattended-upgrades-local
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Unattended-Upgrade "1";
+APT::Periodic::AutocleanInterval "7";

@@ -1,0 +1,18 @@
+// lenovo overrides for unattended-upgrades (package's 50unattended-upgrades left untouched).
+// Auto-install: Debian security + Tailscale only. Point releases / Node.js stay manual.
+// #clear is needed: apt.conf lists are additive, so without it Debian's defaults remain.
+#clear Unattended-Upgrade::Origins-Pattern;
+Unattended-Upgrade::Origins-Pattern {
+    "origin=Debian,codename=${distro_codename}-security,label=Debian-Security";
+    "origin=Tailscale,label=Tailscale";
+};
+
+// Reboot at 04:00 only when an update requires it. WithUsers=true because
+// jamin is permanently logged in on tty1 (otherwise it would never reboot).
+Unattended-Upgrade::Automatic-Reboot "true";
+Unattended-Upgrade::Automatic-Reboot-WithUsers "true";
+Unattended-Upgrade::Automatic-Reboot-Time "04:00";
+
+Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";
+Unattended-Upgrade::Remove-New-Unused-Dependencies "true";
+Unattended-Upgrade::SyslogEnable "true";
