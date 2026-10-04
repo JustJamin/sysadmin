@@ -93,5 +93,5 @@
   - Gotcha: k3s's kubectl reads /etc/rancher/k3s/k3s.yaml (root-only) unless `KUBECONFIG` is set → added `export KUBECONFIG="$HOME/.kube/config"` to ~/.bashrc (script now does this too)
   - Not auto-updated — added TODO
   - Rollback: `sudo /usr/local/bin/k3s-uninstall.sh`; `sudo ufw delete allow from 10.42.0.0/16`; same for 10.43.0.0/16
-- home_state dependencies now all done except ESP-IDF toolchain install (user-level, pending)
+- All home_state host dependencies now done (dialout, ESP-IDF deps + toolchain v6.1, Docker, k3s)
 
