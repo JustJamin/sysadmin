@@ -23,6 +23,10 @@ Host setup needed by `~/repo/home_state` (BLE sensor boards → Postgres). That 
 - [x] Docker + Compose — Debian docker.io 26.1.5 + compose 2.26.1; daemon.json default bind 127.0.0.1 (2026-10-04; LAN bind test passed) (home_state step 4)
 - [x] k3s single-node — v1.36.5+k3s1, traefik + servicelb disabled, `local-path` default SC (2026-10-04; PVC + DNS test passed) (home_state step 5)
 - [x] Local image registry for k3s — `registry:2` on 127.0.0.1:5000, restart unless-stopped, volume `registry-data`, via `scripts/run-local-registry.sh` (2026-10-04; k3s pulled `localhost:5000/...` over plain HTTP with no registries.yaml needed) (home_state step 5)
+- [ ] Investigate AR3012 Bluetooth adapter USB resets. Around 2026-10-04 20:46 UTC it re-enumerated on USB (bus 1 device 13 → 34) and BlueZ recreated hci0.
+  - Check `sudo dmesg -T | grep -iE "btusb|usb 1-1.3|hci0"` and `sudo journalctl -u bluetooth`.
+  - Suspects: USB autosuspend (`btusb enable_autosuspend=0`) or AR3012 firmware.
+  - home_state's scanner now restarts itself after 120 s without adverts, so this is no longer an outage, but the root cause is still unknown.
 
 ## done
 - [x] Baseline audit — full machine snapshot 2026-09-26
