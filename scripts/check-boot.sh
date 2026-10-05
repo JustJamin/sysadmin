@@ -8,7 +8,7 @@ FAILS=0
 echo "== boot";    uptime; echo "  booted: $(uptime -s)"
 echo "== network"
 IP4=$(ip -4 -br addr show wlp3s0 | awk '{print $3}'); [ -n "$IP4" ] && ok "wlp3s0 $IP4" || bad "wlp3s0 has no IPv4"
-SSID=$(wpa_cli -i wlp3s0 status 2>/dev/null | sed -n 's/^ssid=//p'); echo "  wifi:  ${SSID:-unknown}"
+SSID=$(/usr/sbin/wpa_cli -i wlp3s0 status 2>/dev/null | sed -n 's/^ssid=//p'); echo "  wifi:  ${SSID:-unknown}"
 tailscale status --self --peers=false 2>/dev/null | head -1 | grep -q 100.79.164.117 && ok "tailscale up (100.79.164.117)" || bad "tailscale not up"
 
 echo "== services"
@@ -26,8 +26,13 @@ echo "== containers / k3s"
 docker inspect -f '{{.State.Running}}' registry 2>/dev/null | grep -q true && ok "registry container running" || bad "registry not running"
 curl -fsS -m 5 http://127.0.0.1:5000/v2/ >/dev/null && ok "registry answers :5000" || bad "registry not answering"
 kubectl get nodes --no-headers 2>/dev/null | grep -q ' Ready' && ok "node Ready" || bad "node not Ready"
-NOTREADY=$(kubectl get pods -A --no-headers 2>/dev/null | awk '{split($3,a,"/"); if ($4!="Completed" && (a[1]!=a[2] || $4!="Running")) print $1"/"$2" "$3" "$4}')
-[ -z "$NOTREADY" ] && ok "all pods Ready" || { bad "pods not ready:"; echo "$NOTREADY" | sed 's/^/        /'; }
+# Pods stopped by graceful node shutdown stay as Succeeded/Failed ("Completed"/"Error") until deleted — not failures.
+LIVE='status.phase!=Succeeded,status.phase!=Failed'
+NOTREADY=$(kubectl get pods -A --no-headers --field-selector="$LIVE" 2>/dev/null | awk '{split($3,a,"/"); if (a[1]!=a[2] || $4!="Running") print $1"/"$2" "$3" "$4}')
+[ -z "$NOTREADY" ] && ok "all pods Ready" || { bad "pods not ready (just booted? some take minutes — re-run):"; echo "$NOTREADY" | sed 's/^/        /'; }
+DEAD=$(kubectl get pods -A --no-headers --field-selector='status.phase=Failed' 2>/dev/null | wc -l)
+DEAD=$((DEAD + $(kubectl get pods -A --no-headers --field-selector='status.phase=Succeeded' 2>/dev/null | wc -l)))
+[ "$DEAD" -eq 0 ] || echo "  note: $DEAD old pod(s) left from shutdown — clear with: kubectl delete pods -A --field-selector=status.phase==Failed (and ==Succeeded)"
 PGLOG=$(kubectl -n home-state logs postgres-0 2>/dev/null | grep -E 'database system was (shut down|interrupted|not properly shut down)' | tail -1)
 echo "  postgres last start: ${PGLOG:-n/a}"
 CODE=$(curl -s -m 15 -o /dev/null -w '%{http_code}' --resolve lenovo.tailc2dfa5.ts.net:443:100.79.164.117 https://lenovo.tailc2dfa5.ts.net/)
