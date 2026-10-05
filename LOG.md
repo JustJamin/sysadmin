@@ -151,6 +151,9 @@
   - Postgres clean again ("was shut down at 17:09:37 UTC"); dashboard HTTPS 200; check-boot.sh 0 failures
   - Cleared 9 pods left Completed/Error by the graceful shutdown
 - Grafana scaled to 0 at user's request (not in use; ~8 min boot because of emptyDir data): `kubectl -n home-state scale deploy/grafana --replicas=0`
-  - NOTE: home_state's deploy/k8s/grafana.yaml still has `replicas: 1`, so `kubectl apply -k deploy` will start it again
+  - home_state grafana.yaml now `replicas: 0` too (re-applying keeps it off)
   - Bring back: `kubectl -n home-state scale deploy/grafana --replicas=1`
 
+- home_state (merge of grafana-off-and-pod-cleanup):
+  - deploy/k8s/grafana.yaml `replicas: 0` — `kubectl diff -k deploy` clean, so re-applying won't restart Grafana
+  - deploy/k3s/clean-dead-pods.sh + k3s-clean-dead-pods.service: once per boot after k3s, delete pods left Completed/Error by graceful shutdown — only ReplicaSet/StatefulSet/DaemonSet-owned; Job/bare pods kept. Dry-run tested: ownerless Succeeded + Failed pods kept. Needs `sudo sh ~/repo/home_state/deploy/k3s/apply.sh` to install/enable
