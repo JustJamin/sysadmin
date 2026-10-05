@@ -6,6 +6,7 @@
 - RAM: 5.7Gi total, ~5.0Gi available
 - Disk: 910GB root (/dev/sda2), ~862GB free
 - Swap: 5.9Gi
+- Location: moved 2026-10-05 — Wi-Fi "Morrison", LAN 10.132.242.9/24 (DHCP). wpa_supplicant.conf also knows VM1429985.
 - Tailscale: 100.79.164.117 (lenovo)
 - SSH: key-only (password + root login disabled, AllowUsers jamin) via /etc/ssh/sshd_config.d/10-hardening.conf; one key in authorized_keys = Termius on phone (SHA256:bMBcakii…)
 - Access: Tailscale + Termius from phone

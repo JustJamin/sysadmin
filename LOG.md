@@ -145,5 +145,12 @@
   - All services/settings OK. Registry up before pods (no ImagePullBackOff)
   - Pods stopped by graceful shutdown remain as Completed/Error until deleted (k8s behaviour) — deleted with `kubectl delete pods -A --field-selector=status.phase==Failed` / `==Succeeded`; check-boot.sh now ignores them and prints a note
   - Grafana Ready only after ~8 min: its data volume is emptyDir → 813 DB migrations on every start (home_state matter, not host)
-  - check-boot.sh fixes: /usr/sbin/wpa_cli (not on jamin's PATH)
+  - check-boot.sh fixes: /usr/sbin/wpa_cli (not on jamin's PATH)- Moved lenovo: poweroff ~18:09, booted 18:10:36 at new location
+  - Wi-Fi "Morrison" joined automatically; LAN IP 10.132.242.9/24; Tailscale same 100.79.164.117
+  - k3s node InternalIP followed the new address (10.132.242.9) on its own; node Ready, all pods Ready
+  - Postgres clean again ("was shut down at 17:09:37 UTC"); dashboard HTTPS 200; check-boot.sh 0 failures
+  - Cleared 9 pods left Completed/Error by the graceful shutdown
+- Grafana scaled to 0 at user's request (not in use; ~8 min boot because of emptyDir data): `kubectl -n home-state scale deploy/grafana --replicas=0`
+  - NOTE: home_state's deploy/k8s/grafana.yaml still has `replicas: 1`, so `kubectl apply -k deploy` will start it again
+  - Bring back: `kubectl -n home-state scale deploy/grafana --replicas=1`
 
