@@ -107,3 +107,4 @@
 
 ## 2026-10-05
 - Health check (home_state): AR3012 Bluetooth adapter re-enumerated again at ~2026-10-04 23:49 UTC (USB device 34 → 46). It's the second time, so the problem is recurring. home_state's scanner watchdog recovered by itself in 2 min 12 s. Root cause still needs `sudo dmesg` / journal (see TODO).
+- Added TODO: Tailscale HTTPS certs + `tailscale serve` (https://lenovo.tailc2dfa5.ts.net/ → 127.0.0.1:30304), so home_state v1.1.0 can provision BLE nodes from the phone with Web Bluetooth, which needs HTTPS.
