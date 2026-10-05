@@ -122,3 +122,4 @@
   - Verified: HTTP 200 with valid cert (CN=lenovo.tailc2dfa5.ts.net, Let's Encrypt YE1, until 2027-01-03, auto-renewed); serve status "tailnet only"; 192.168.0.18:443 no answer
   - Script's self-test failed with "Could not resolve host" — lenovo's resolv.conf uses ISP DNS, not MagicDNS. Script now uses `curl --resolve …:100.79.164.117`. MagicDNS-on-lenovo noted under Tailscale polish TODO.
   - Undo: `sudo tailscale serve --https=443 off`
+- AR3012 resets under load: two more USB re-enumerations (46 → 48 → 50) during home_state OTA bench tests over hci0, one coinciding with a link supervision timeout mid-transfer. Added the evidence and options (autosuspend off, dmesg, BT 5 dongle) to the TODO.

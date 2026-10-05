@@ -29,6 +29,8 @@ Host setup needed by `~/repo/home_state` (BLE sensor boards → Postgres). That 
   - Suspects: USB autosuspend (`btusb enable_autosuspend=0`) or AR3012 firmware.
   - home_state's scanner now restarts itself after 120 s without adverts, so this is no longer an outage, but the root cause is still unknown.
   - Recurring: it reset again at ~2026-10-04 23:49 UTC (device 34 → 46). The scanner watchdog restarted it after 2 min 12 s, losing ~26 readings.
+  - **Load-related** (2026-10-05): during home_state BLE OTA bench tests (bleak central on hci0 sending ~16 KB/s), it reset twice in ~20 min (46 → 48 → 50). One reset was exactly when a transfer dropped with supervision timeout 0x208. Sustained connection traffic triggers it.
+  - Options: disable btusb autosuspend (`options btusb enable_autosuspend=0`); check `sudo dmesg` for firmware errors (ath3k / AR3012 firmware); or add a modern USB BT 5 dongle (e.g. RTL8761B) for scanning and keep the AR3012 for nothing.
   - 2026-10-05: FIX APPLIED, watching. Found `btusb enable_autosuspend=Y`, adapter `power/control=auto` (2 s delay), `runtime_suspended_time=120060` ms → it was autosuspending. Applied live via `scripts/fix-bt-autosuspend.sh` (no btusb reload): param N, `power/control=on`, persisted in `/etc/modprobe.d/btusb-no-autosuspend.conf`.
   - Close when: no new re-enumeration (device stays 46 / hci0 not recreated) for a few days, and `runtime_suspended_time` stays at 120060.
 
