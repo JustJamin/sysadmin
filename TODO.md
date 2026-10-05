@@ -27,6 +27,7 @@ Host setup needed by `~/repo/home_state` (BLE sensor boards → Postgres). That 
   - Check `sudo dmesg -T | grep -iE "btusb|usb 1-1.3|hci0"` and `sudo journalctl -u bluetooth`.
   - Suspects: USB autosuspend (`btusb enable_autosuspend=0`) or AR3012 firmware.
   - home_state's scanner now restarts itself after 120 s without adverts, so this is no longer an outage, but the root cause is still unknown.
+  - Recurring: it reset again at ~2026-10-04 23:49 UTC (device 34 → 46). The scanner watchdog restarted it after 2 min 12 s, losing ~26 readings.
 
 ## done
 - [x] Baseline audit — full machine snapshot 2026-09-26

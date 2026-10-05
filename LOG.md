@@ -104,3 +104,6 @@
   - Remove: `docker rm -f registry && docker volume rm registry-data`
 
 - Added TODO: investigate AR3012 USB resets. On 2026-10-04 ~20:46 UTC the Bluetooth adapter re-enumerated on USB (device 13 → 34). BlueZ recreated hci0 and home_state's scanner stopped receiving adverts for ~11 min, until it was restarted. The scanner now exits after 120 s of silence so it gets restarted automatically. Root cause needs root to read dmesg/journal.
+
+## 2026-10-05
+- Health check (home_state): AR3012 Bluetooth adapter re-enumerated again at ~2026-10-04 23:49 UTC (USB device 34 → 46). It's the second time, so the problem is recurring. home_state's scanner watchdog recovered by itself in 2 min 12 s. Root cause still needs `sudo dmesg` / journal (see TODO).
