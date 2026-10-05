@@ -1,7 +1,7 @@
 # Machine facts — sysadmin project copy
 
 - Host: lenovo (Lenovo IdeaPad Z500)
-- OS: Debian 13 (trixie), kernel 6.12.107+deb13-amd64
+- OS: Debian 13 (trixie), kernel 6.12.111+deb13-amd64 (since 2026-10-05 reboot)
 - CPU: Intel i5-3210M @ 2.50GHz, 4 cores
 - RAM: 5.7Gi total, ~5.0Gi available
 - Disk: 910GB root (/dev/sda2), ~862GB free

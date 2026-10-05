@@ -139,4 +139,11 @@
 - k3s graceful shutdown, attempt 2 (home_state deploy/k3s/apply.sh): kubelet now has shutdownGracePeriod 1m0s / critical 10s, k3s stable (restarts=0), After=docker.service OK
   - BUT logind InhibitDelayMaxUSec = 30s → no kubelet inhibitor. Cause: unattended-upgrades ships `/usr/lib/systemd/logind.conf.d/unattended-upgrades-logind-maxdelay.conf` (InhibitDelayMaxSec=30); logind merges /etc + /usr/lib drop-ins in filename order, last wins, so "u…" beat our 20-inhibit-delay (90) and kubelet's own 99-kubelet.conf (60)
   - Fix (home_state b8652d6): install ours as `/etc/systemd/logind.conf.d/zz-k3s-inhibit-delay.conf`; apply.sh removes the old 20- file. Check merged config with `systemd-analyze cat-config systemd/logind.conf`
-  - Attempt 2 verified after zz- rename: InhibitDelayMaxUSec=90s, kubelet holds "delay" shutdown inhibitor, shutdownGracePeriod 1m0s, restarts=0
+  - Attempt 2 verified after zz- rename: InhibitDelayMaxUSec=90s, kubelet holds "delay" shutdown inhibitor, shutdownGracePeriod 1m0s, restarts=0- Test reboot at home 17:58 → up 17:59:50 BST, kernel 6.12.111 (installed by unattended-upgrades, first boot into it)
+  - Shutdown took ~1 min (kubelet graceful shutdown); postgres log: "database system was shut down at 16:58:38 UTC" — clean, no crash recovery
+  - Wi-Fi came up on new wpa-conf setup (VM1429985, wpa_state COMPLETED); ufw.service active, consoleblank=60 on cmdline (both first proven at boot)
+  - All services/settings OK. Registry up before pods (no ImagePullBackOff)
+  - Pods stopped by graceful shutdown remain as Completed/Error until deleted (k8s behaviour) — deleted with `kubectl delete pods -A --field-selector=status.phase==Failed` / `==Succeeded`; check-boot.sh now ignores them and prints a note
+  - Grafana Ready only after ~8 min: its data volume is emptyDir → 813 DB migrations on every start (home_state matter, not host)
+  - check-boot.sh fixes: /usr/sbin/wpa_cli (not on jamin's PATH)
+

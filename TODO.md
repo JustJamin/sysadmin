@@ -16,7 +16,7 @@ Updated after every session. Oldest tasks first; current work at top.
 - [ ] Move prep for lenovo → new location (Wi-Fi "Morrison"):
   - [x] Wi-Fi: both networks in wpa_supplicant.conf (`scripts/setup-wifi-networks.sh`)
   - [x] k3s graceful shutdown + after-docker via `~/repo/home_state/deploy/k3s/apply.sh` — kubelet delay inhibitor held, logind max 90s (2026-10-05)
-  - [ ] Test reboot at home, then `sh scripts/check-boot.sh` (all OK; postgres "was shut down")
+  - [x] Test reboot at home (2026-10-05 17:59) — check-boot all OK; Wi-Fi via new wpa_supplicant.conf (VM1429985); postgres "was shut down" (graceful shutdown works)
   - [ ] Poweroff, move, boot, `check-boot.sh` again (wifi = Morrison)
 - [ ] Tailscale polish (Tailscale SSH, MagicDNS). lenovo itself can't resolve `*.tailc2dfa5.ts.net`: `/etc/resolv.conf` is DHCP-written (ISP 194.168.x) even though CorpDNS=true — tailscaled can't manage it (no systemd-resolved/resolvconf). Other tailnet devices are fine.
 
