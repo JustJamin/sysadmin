@@ -123,3 +123,15 @@
   - Script's self-test failed with "Could not resolve host" — lenovo's resolv.conf uses ISP DNS, not MagicDNS. Script now uses `curl --resolve …:100.79.164.117`. MagicDNS-on-lenovo noted under Tailscale polish TODO.
   - Undo: `sudo tailscale serve --https=443 off`
 - AR3012 resets under load: two more USB re-enumerations (46 → 48 → 50) during home_state OTA bench tests over hci0, one coinciding with a link supervision timeout mid-transfer. Added the evidence and options (autosuspend off, dmesg, BT 5 dongle) to the TODO.
+- Move prep (lenovo moving to new Wi-Fi "Morrison"):
+  - `scripts/setup-wifi-networks.sh`: /etc/network/interfaces now uses `wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf` (root 600, hashed PSKs) with VM1429985 + Morrison; old file at `/etc/network/interfaces.pre-wifi-roam`. Takes effect at next boot — NOT yet tested.
+  - k3s.service.d/10-after-docker.conf installed (After/Wants=docker.service) — verified in `systemctl show k3s -p After`
+  - `scripts/check-boot.sh` (no sudo) — baseline pre-reboot: only expected FAILs (ufw.service inactive since enabled live; consoleblank not on cmdline yet)
+- INCIDENT 17:40–17:44 BST: k3s crash-looped (23+ restarts) after `prepare-for-move.sh` added `kubelet-arg: shutdown-grace-period=60s / shutdown-grace-period-critical-pods=10s`
+  - Error: `kubelet exited: failed to parse kubelet flag: unknown flag: --shutdown-grace-period` — these are KubeletConfiguration-file-only fields in k8s 1.36, not CLI flags
+  - Impact: API server flapping; pods kept running (KillMode=process), dashboard NodePort stayed 200, no pod restarts
+  - Fix: `scripts/k3s-fix-crashloop.sh` removed the kubelet-arg block (backup `/etc/rancher/k3s/config.yaml.bak-crashloop`), restarted → stable since 17:44:53, NRestarts=0
+  - Also: prepare-for-move.sh's ordering check used `grep -x` on `After=docker.service …` (first token) → false failure + early exit under set -e; fixed with `--value`
+  - Graceful shutdown still TODO: needs a KubeletConfiguration drop-in (k3s kubelet --config-dir=/var/lib/rancher/k3s/agent/etc/kubelet.conf.d) + logind InhibitDelayMaxSec ≥ 60s
+  - Lesson: long pasted one-liners wrap in Termius and break — use scripts
+

@@ -1,6 +1,6 @@
 #!/bin/sh
 # Make shutdown/boot clean for k3s workloads:
-#  - kubelet graceful node shutdown (config.yaml kubelet-arg) so Postgres stops cleanly on poweroff
+#  - (graceful node shutdown: NOT via kubelet-arg — crash-looped k3s 2026-10-05, see LOG)
 #  - k3s starts after docker (local registry must be up for image pulls)
 # Restarts k3s once; running pods are not killed (KillMode=process).
 # Run with: sudo sh ~/repo/sysadmin/scripts/prepare-for-move.sh
@@ -22,7 +22,7 @@ until k3s kubectl get nodes 2>/dev/null | grep -q ' Ready'; do
 done
 sleep 10   # give kubelet time to register its shutdown inhibitor
 
-echo "--- k3s ordering:"; systemctl show k3s -p After --no-pager | tr ' ' '\n' | grep -x docker.service
+echo "--- k3s ordering:"; systemctl show k3s -p After --value --no-pager | tr ' ' '\n' | grep -x docker.service || echo "WARNING: docker.service not in After="
 echo "--- shutdown inhibitor (expect kubelet, delay):"; systemd-inhibit --list --no-pager | grep -i kubelet || echo "WARNING: no kubelet inhibitor yet"
 echo "--- logind delay max:"; busctl get-property org.freedesktop.login1 /org/freedesktop/login1 org.freedesktop.login1.Manager InhibitDelayMaxUSec
 echo "--- pods:"; k3s kubectl get pods -A --no-headers | awk '{print $1, $2, $3, $4}'
