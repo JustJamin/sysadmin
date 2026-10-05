@@ -139,3 +139,4 @@
 - k3s graceful shutdown, attempt 2 (home_state deploy/k3s/apply.sh): kubelet now has shutdownGracePeriod 1m0s / critical 10s, k3s stable (restarts=0), After=docker.service OK
   - BUT logind InhibitDelayMaxUSec = 30s → no kubelet inhibitor. Cause: unattended-upgrades ships `/usr/lib/systemd/logind.conf.d/unattended-upgrades-logind-maxdelay.conf` (InhibitDelayMaxSec=30); logind merges /etc + /usr/lib drop-ins in filename order, last wins, so "u…" beat our 20-inhibit-delay (90) and kubelet's own 99-kubelet.conf (60)
   - Fix (home_state b8652d6): install ours as `/etc/systemd/logind.conf.d/zz-k3s-inhibit-delay.conf`; apply.sh removes the old 20- file. Check merged config with `systemd-analyze cat-config systemd/logind.conf`
+  - Attempt 2 verified after zz- rename: InhibitDelayMaxUSec=90s, kubelet holds "delay" shutdown inhibitor, shutdownGracePeriod 1m0s, restarts=0
