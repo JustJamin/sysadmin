@@ -136,3 +136,6 @@
   - Lesson: long pasted one-liners wrap in Termius and break — use scripts- k3s settings moved to home_state (user decision): `~/repo/home_state/deploy/k3s/` (merged ae0f57e) — config.yaml, kubelet-graceful-shutdown.conf (KubeletConfiguration drop-in → /var/lib/rancher/k3s/agent/etc/kubelet.conf.d/50-graceful-shutdown.conf), logind-inhibit-delay.conf (InhibitDelayMaxSec=90), k3s-after-docker.conf, apply.sh (auto-removes kubelet drop-in if k3s crash-loops)
   - Removed sysadmin copies (configs/etc/rancher/k3s/config.yaml, k3s.service.d drop-in) and prepare-for-move.sh; install-k3s.sh now reads config.yaml from home_state
 
+- k3s graceful shutdown, attempt 2 (home_state deploy/k3s/apply.sh): kubelet now has shutdownGracePeriod 1m0s / critical 10s, k3s stable (restarts=0), After=docker.service OK
+  - BUT logind InhibitDelayMaxUSec = 30s → no kubelet inhibitor. Cause: unattended-upgrades ships `/usr/lib/systemd/logind.conf.d/unattended-upgrades-logind-maxdelay.conf` (InhibitDelayMaxSec=30); logind merges /etc + /usr/lib drop-ins in filename order, last wins, so "u…" beat our 20-inhibit-delay (90) and kubelet's own 99-kubelet.conf (60)
+  - Fix (home_state b8652d6): install ours as `/etc/systemd/logind.conf.d/zz-k3s-inhibit-delay.conf`; apply.sh removes the old 20- file. Check merged config with `systemd-analyze cat-config systemd/logind.conf`
