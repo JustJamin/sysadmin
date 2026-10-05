@@ -116,5 +116,9 @@
   - Fix via `scripts/fix-bt-autosuspend.sh` (live, no btusb reload — scanner unaffected): `enable_autosuspend=N`, `power/control=on`, `/etc/modprobe.d/btusb-no-autosuspend.conf`; etckeeper committed
   - Verified after: param N, control=on, status active, devnum 46, runtime_suspended_time unchanged at 120060
   - Undo: remove the modprobe.d file; `echo Y | sudo tee /sys/module/btusb/parameters/enable_autosuspend`
-- Tailscale HTTPS for home_state: `scripts/enable-tailscale-serve.sh` written; waiting on HTTPS Certificates being enabled in admin console (CertDomains currently null)
-
+- Tailscale HTTPS for home_state provisioning dashboard (Web Bluetooth needs a secure context)
+  - User enabled HTTPS Certificates in admin console (name now in public CT logs, as noted in TODO)
+  - `scripts/enable-tailscale-serve.sh`: `tailscale serve --bg --https=443 http://127.0.0.1:30304` (dash-fastapi-sse NodePort); config persists in tailscaled
+  - Verified: HTTP 200 with valid cert (CN=lenovo.tailc2dfa5.ts.net, Let's Encrypt YE1, until 2027-01-03, auto-renewed); serve status "tailnet only"; 192.168.0.18:443 no answer
+  - Script's self-test failed with "Could not resolve host" — lenovo's resolv.conf uses ISP DNS, not MagicDNS. Script now uses `curl --resolve …:100.79.164.117`. MagicDNS-on-lenovo noted under Tailscale polish TODO.
+  - Undo: `sudo tailscale serve --https=443 off`

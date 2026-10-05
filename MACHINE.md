@@ -15,6 +15,7 @@
 - k3s: v1.36.5+k3s1 single node (own containerd). /etc/rancher/k3s/config.yaml: traefik + servicelb disabled, NodePorts on 127.0.0.1 + 100.79.164.117 only. Default SC local-path. Pods 10.42/16, services 10.43/16 (ufw-allowed). API :6443 tailnet/localhost only. kubectl as jamin via ~/.kube/config (KUBECONFIG in ~/.bashrc).
 - Registry: Docker container `registry` (registry:2) on 127.0.0.1:5000, volume `registry-data`, restart unless-stopped. k3s pulls `localhost:5000/...` over HTTP (no registries.yaml).
 - Bluetooth: AR3012 (0cf3:3004, hci0, USB 1-1.3) — USB autosuspend disabled (`/etc/modprobe.d/btusb-no-autosuspend.conf`) after USB resets.
+- tailscale serve: https://lenovo.tailc2dfa5.ts.net/ (tailnet only, Let's Encrypt, auto-renew) → http://127.0.0.1:30304 (home_state dashboard NodePort). Undo: `sudo tailscale serve --https=443 off`.
 - Lid: close is ignored (AC + battery) via /etc/systemd/logind.conf.d/10-lid-ignore.conf
 - /etc: tracked by etckeeper (local git in /etc/.git, root-only, NO remote — contains secrets); daily etckeeper.timer + apt hooks
 - Console: blanks after 60s idle (consoleblank=60 via /etc/default/grub.d/console-blank.cfg)

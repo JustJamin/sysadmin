@@ -21,4 +21,6 @@ tailscale serve --bg --https=443 http://127.0.0.1:30304
 
 echo "--- serve status:"; tailscale serve status
 echo "--- https test (first request may take a few seconds while the cert is issued):"
-curl -sS -m 60 -o /dev/null -w "https://lenovo.tailc2dfa5.ts.net/ -> HTTP %{http_code}\n" https://lenovo.tailc2dfa5.ts.net/
+# --resolve: lenovo's own resolv.conf doesn't use MagicDNS (see TODO), so pin the name to our tailnet IP.
+curl -sS -m 60 -o /dev/null --resolve lenovo.tailc2dfa5.ts.net:443:100.79.164.117 \
+  -w "https://lenovo.tailc2dfa5.ts.net/ -> HTTP %{http_code}\n" https://lenovo.tailc2dfa5.ts.net/

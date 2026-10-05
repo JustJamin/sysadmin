@@ -13,7 +13,7 @@ Updated after every session. Oldest tasks first; current work at top.
 - [ ] dashboard / monitoring seed (disk, mem, journal)
 - [ ] k3s updates are manual (not covered by unattended-upgrades) — re-run `curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=stable sh -` periodically
 - [ ] Registry garbage collection — old home_state image layers accumulate in `registry-data`; deletes are disabled by default (revisit if disk use grows)
-- [ ] Tailscale polish (Tailscale SSH, MagicDNS)
+- [ ] Tailscale polish (Tailscale SSH, MagicDNS). lenovo itself can't resolve `*.tailc2dfa5.ts.net`: `/etc/resolv.conf` is DHCP-written (ISP 194.168.x) even though CorpDNS=true — tailscaled can't manage it (no systemd-resolved/resolvconf). Other tailnet devices are fine.
 
 ## home_state dependencies
 Host setup needed by `~/repo/home_state` (BLE sensor boards → Postgres). That project is blocked on these. Added 2026-10-04.
@@ -23,10 +23,7 @@ Host setup needed by `~/repo/home_state` (BLE sensor boards → Postgres). That 
 - [x] Docker + Compose — Debian docker.io 26.1.5 + compose 2.26.1; daemon.json default bind 127.0.0.1 (2026-10-04; LAN bind test passed) (home_state step 4)
 - [x] k3s single-node — v1.36.5+k3s1, traefik + servicelb disabled, `local-path` default SC (2026-10-04; PVC + DNS test passed) (home_state step 5)
 - [x] Local image registry for k3s — `registry:2` on 127.0.0.1:5000, restart unless-stopped, volume `registry-data`, via `scripts/run-local-registry.sh` (2026-10-04; k3s pulled `localhost:5000/...` over plain HTTP with no registries.yaml needed) (home_state step 5)
-- [ ] Tailscale HTTPS for the home_state provisioning dashboard (home_state v1.1.0). Web Bluetooth and service workers only work in a secure context.
-  - Enable HTTPS certificates in the Tailscale admin console (DNS → HTTPS Certificates). Note: `lenovo.tailc2dfa5.ts.net` then appears in public Certificate Transparency logs.
-  - On lenovo: `sudo tailscale serve --bg --https=443 http://127.0.0.1:30304`, giving https://lenovo.tailc2dfa5.ts.net/ (tailnet-only). Check with `tailscale serve status`. Undo: `sudo tailscale serve --https=443 off`.
-  - Keep the plain-HTTP NodePort 30304 too.
+- [x] Tailscale HTTPS for the home_state provisioning dashboard — https://lenovo.tailc2dfa5.ts.net/ → http://127.0.0.1:30304 via `scripts/enable-tailscale-serve.sh` (2026-10-05; HTTP 200, Let's Encrypt cert, tailnet-only; NodePort 30304 kept) (home_state v1.1.0)
 - [ ] Investigate AR3012 Bluetooth adapter USB resets. Around 2026-10-04 20:46 UTC it re-enumerated on USB (bus 1 device 13 → 34) and BlueZ recreated hci0.
   - Check `sudo dmesg -T | grep -iE "btusb|usb 1-1.3|hci0"` and `sudo journalctl -u bluetooth`.
   - Suspects: USB autosuspend (`btusb enable_autosuspend=0`) or AR3012 firmware.
