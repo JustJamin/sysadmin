@@ -5,10 +5,11 @@
 #           sudo ufw delete allow from 10.42.0.0/16 && sudo ufw delete allow from 10.43.0.0/16
 set -eu
 [ "$(id -u)" -eq 0 ] || { echo "run with sudo" >&2; exit 1; }
-REPO="$(cd "$(dirname "$0")/.." && pwd)"
-
-# Config first so k3s's first start uses it.
-install -Dm644 "$REPO/configs/etc/rancher/k3s/config.yaml" /etc/rancher/k3s/config.yaml
+# k3s settings live in home_state (deploy/k3s/). Config first so k3s's first start uses it;
+# run home_state's deploy/k3s/apply.sh afterwards for the remaining drop-ins.
+K3S_CFG=/home/jamin/repo/home_state/deploy/k3s/config.yaml
+[ -f "$K3S_CFG" ] || { echo "ABORT: $K3S_CFG not found (clone home_state first)" >&2; exit 1; }
+install -Dm644 "$K3S_CFG" /etc/rancher/k3s/config.yaml
 
 # Pods/services must reach the API server + DNS on the host (k3s docs). 6443 stays tailnet/localhost only.
 ufw allow from 10.42.0.0/16 comment 'k3s pods'
@@ -34,4 +35,4 @@ echo "--- nodes:";   k3s kubectl get nodes -o wide
 echo "--- pods:";    k3s kubectl get pods -A
 echo "--- ufw:";     ufw status | grep -E '10\.4[23]\.0\.0'
 etckeeper commit "k3s: single node, traefik+servicelb disabled; ufw allow pod/service CIDRs" || true
-echo "--- done. As jamin: kubectl get nodes"
+echo "--- done. Next: sudo sh ~/repo/home_state/deploy/k3s/apply.sh ; then as jamin: kubectl get nodes"

@@ -13,6 +13,11 @@ Updated after every session. Oldest tasks first; current work at top.
 - [ ] dashboard / monitoring seed (disk, mem, journal)
 - [ ] k3s updates are manual (not covered by unattended-upgrades) — re-run `curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=stable sh -` periodically
 - [ ] Registry garbage collection — old home_state image layers accumulate in `registry-data`; deletes are disabled by default (revisit if disk use grows)
+- [ ] Move prep for lenovo → new location (Wi-Fi "Morrison"):
+  - [x] Wi-Fi: both networks in wpa_supplicant.conf (`scripts/setup-wifi-networks.sh`)
+  - [ ] k3s graceful shutdown + after-docker: `sudo sh ~/repo/home_state/deploy/k3s/apply.sh` (k3s settings now live in home_state/deploy/k3s)
+  - [ ] Test reboot at home, then `sh scripts/check-boot.sh` (all OK; postgres "was shut down")
+  - [ ] Poweroff, move, boot, `check-boot.sh` again (wifi = Morrison)
 - [ ] Tailscale polish (Tailscale SSH, MagicDNS). lenovo itself can't resolve `*.tailc2dfa5.ts.net`: `/etc/resolv.conf` is DHCP-written (ISP 194.168.x) even though CorpDNS=true — tailscaled can't manage it (no systemd-resolved/resolvconf). Other tailnet devices are fine.
 
 ## home_state dependencies

@@ -133,5 +133,6 @@
   - Fix: `scripts/k3s-fix-crashloop.sh` removed the kubelet-arg block (backup `/etc/rancher/k3s/config.yaml.bak-crashloop`), restarted → stable since 17:44:53, NRestarts=0
   - Also: prepare-for-move.sh's ordering check used `grep -x` on `After=docker.service …` (first token) → false failure + early exit under set -e; fixed with `--value`
   - Graceful shutdown still TODO: needs a KubeletConfiguration drop-in (k3s kubelet --config-dir=/var/lib/rancher/k3s/agent/etc/kubelet.conf.d) + logind InhibitDelayMaxSec ≥ 60s
-  - Lesson: long pasted one-liners wrap in Termius and break — use scripts
+  - Lesson: long pasted one-liners wrap in Termius and break — use scripts- k3s settings moved to home_state (user decision): `~/repo/home_state/deploy/k3s/` (merged ae0f57e) — config.yaml, kubelet-graceful-shutdown.conf (KubeletConfiguration drop-in → /var/lib/rancher/k3s/agent/etc/kubelet.conf.d/50-graceful-shutdown.conf), logind-inhibit-delay.conf (InhibitDelayMaxSec=90), k3s-after-docker.conf, apply.sh (auto-removes kubelet drop-in if k3s crash-loops)
+  - Removed sysadmin copies (configs/etc/rancher/k3s/config.yaml, k3s.service.d drop-in) and prepare-for-move.sh; install-k3s.sh now reads config.yaml from home_state
 

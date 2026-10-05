@@ -12,7 +12,7 @@
 - Firewall: ufw — deny incoming/routed, allow outgoing; allow all in on tailscale0 + 41641/udp. LAN (192.168.0.18) cannot reach SSH.
 - Updates: unattended-upgrades — Debian-Security + Tailscale daily (~06:00); auto-reboot 04:00 when required. Point releases + Node.js manual (`sudo apt update && sudo apt upgrade`).
 - Docker: docker.io 26.1.5 + compose 2.26.1 + buildx (Debian). /etc/docker/daemon.json: published ports default to 127.0.0.1, log-driver local. jamin in docker group (root-equivalent).
-- k3s: v1.36.5+k3s1 single node (own containerd). /etc/rancher/k3s/config.yaml: traefik + servicelb disabled, NodePorts on 127.0.0.1 + 100.79.164.117 only. Default SC local-path. Pods 10.42/16, services 10.43/16 (ufw-allowed). API :6443 tailnet/localhost only. kubectl as jamin via ~/.kube/config (KUBECONFIG in ~/.bashrc).
+- k3s: v1.36.5+k3s1 single node (own containerd). Settings from ~/repo/home_state/deploy/k3s/. /etc/rancher/k3s/config.yaml: traefik + servicelb disabled, NodePorts on 127.0.0.1 + 100.79.164.117 only. Default SC local-path. Pods 10.42/16, services 10.43/16 (ufw-allowed). API :6443 tailnet/localhost only. kubectl as jamin via ~/.kube/config (KUBECONFIG in ~/.bashrc).
 - Registry: Docker container `registry` (registry:2) on 127.0.0.1:5000, volume `registry-data`, restart unless-stopped. k3s pulls `localhost:5000/...` over HTTP (no registries.yaml).
 - Bluetooth: AR3012 (0cf3:3004, hci0, USB 1-1.3) — USB autosuspend disabled (`/etc/modprobe.d/btusb-no-autosuspend.conf`) after USB resets.
 - tailscale serve: https://lenovo.tailc2dfa5.ts.net/ (tailnet only, Let's Encrypt, auto-renew) → http://127.0.0.1:30304 (home_state dashboard NodePort). Undo: `sudo tailscale serve --https=443 off`.
