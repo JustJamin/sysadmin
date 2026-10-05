@@ -22,3 +22,4 @@
 - Console: blanks after 60s idle (consoleblank=60 via /etc/default/grub.d/console-blank.cfg)
 
 Source: ~/notes/MACHINE.md
+- Shell aliases (~/.bashrc, all end in `-a`): poweroff-a, reboot-a, checkboot-a, sysadmin-a, home-state-a

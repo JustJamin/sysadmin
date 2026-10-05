@@ -157,3 +157,4 @@
 - home_state (merge of grafana-off-and-pod-cleanup):
   - deploy/k8s/grafana.yaml `replicas: 0` — `kubectl diff -k deploy` clean, so re-applying won't restart Grafana
   - deploy/k3s/clean-dead-pods.sh + k3s-clean-dead-pods.service: once per boot after k3s, delete pods left Completed/Error by graceful shutdown — only ReplicaSet/StatefulSet/DaemonSet-owned; Job/bare pods kept. Dry-run tested: ownerless Succeeded + Failed pods kept. Needs `sudo sh ~/repo/home_state/deploy/k3s/apply.sh` to install/enable
+- Shell aliases added to ~/.bashrc (block "jamin's aliases", all end in -a): poweroff-a (sudo systemctl poweroff), reboot-a (sudo systemctl reboot), checkboot-a (scripts/check-boot.sh), sysadmin-a (cd ~/repo/sysadmin && claude -r sysadmin), home-state-a (cd ~/repo/home_state && claude -r home_state)
