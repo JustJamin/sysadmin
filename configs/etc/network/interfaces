@@ -1,0 +1,14 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# Wi-Fi: networks (with hashed PSKs) live in /etc/wpa_supplicant/wpa_supplicant.conf (root 600),
+# so lenovo joins whichever known network is in range at boot.
+allow-hotplug wlp3s0
+iface wlp3s0 inet dhcp
+        wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
