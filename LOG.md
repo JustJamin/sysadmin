@@ -108,3 +108,13 @@
 ## 2026-10-05
 - Health check (home_state): AR3012 Bluetooth adapter re-enumerated again at ~2026-10-04 23:49 UTC (USB device 34 → 46). It's the second time, so the problem is recurring. home_state's scanner watchdog recovered by itself in 2 min 12 s. Root cause still needs `sudo dmesg` / journal (see TODO).
 - Added TODO: Tailscale HTTPS certs + `tailscale serve` (https://lenovo.tailc2dfa5.ts.net/ → 127.0.0.1:30304), so home_state v1.1.0 can provision BLE nodes from the phone with Web Bluetooth, which needs HTTPS.
+
+## 2026-10-05
+- AR3012 USB resets (home_state): suspected USB autosuspend
+  - Before: `btusb enable_autosuspend=Y`; `/sys/bus/usb/devices/1-1.3/power/control=auto`, `autosuspend_delay_ms=2000`, `runtime_suspended_time=120060` ms (so it was suspending). powertop.service disabled, no tlp, no udev power rules.
+  - bluetoothd log: hci0 destroyed/recreated at 21:46 and 00:49 BST (= the 20:46 / 23:49 UTC resets in TODO). dmesg ring buffer had already wrapped (8 days uptime) — kernel-side evidence via `sudo journalctl -k --since -2d | grep -iE 'usb 1-1|btusb|bluetooth'`
+  - Fix via `scripts/fix-bt-autosuspend.sh` (live, no btusb reload — scanner unaffected): `enable_autosuspend=N`, `power/control=on`, `/etc/modprobe.d/btusb-no-autosuspend.conf`; etckeeper committed
+  - Verified after: param N, control=on, status active, devnum 46, runtime_suspended_time unchanged at 120060
+  - Undo: remove the modprobe.d file; `echo Y | sudo tee /sys/module/btusb/parameters/enable_autosuspend`
+- Tailscale HTTPS for home_state: `scripts/enable-tailscale-serve.sh` written; waiting on HTTPS Certificates being enabled in admin console (CertDomains currently null)
+
