@@ -158,3 +158,9 @@
   - deploy/k8s/grafana.yaml `replicas: 0` — `kubectl diff -k deploy` clean, so re-applying won't restart Grafana
   - deploy/k3s/clean-dead-pods.sh + k3s-clean-dead-pods.service: once per boot after k3s, delete pods left Completed/Error by graceful shutdown — only ReplicaSet/StatefulSet/DaemonSet-owned; Job/bare pods kept. Dry-run tested: ownerless Succeeded + Failed pods kept. Needs `sudo sh ~/repo/home_state/deploy/k3s/apply.sh` to install/enable
 - Shell aliases added to ~/.bashrc (block "jamin's aliases", all end in -a): poweroff-a (sudo systemctl poweroff), reboot-a (sudo systemctl reboot), checkboot-a (scripts/check-boot.sh), sysadmin-a (cd ~/repo/sysadmin && claude -r sysadmin), home-state-a (cd ~/repo/home_state && claude -r home_state)
+
+## 2026-10-15
+- k3s config moved out of home_state into a new repo `~/repo/cluster` (k3s/ = old home_state deploy/k3s, plus namespaces/ = one namespace per app with memory ResourceQuota/LimitRange; new apps get default-deny ingress)
+  - install-k3s.sh, README, MACHINE.md now point at `~/repo/cluster/k3s/`; installed host files unchanged, no k3s restart
+  - `kubectl apply -k ~/repo/cluster/namespaces`: home-state got quota (576Mi/2112Mi used of 1536Mi/4Gi), new namespace sentek60 created; home_state pods unaffected
+  - NodePort blocks: home_state 30300–30309, sentek60 30310–30319 (table in ~/repo/cluster/README.md)
