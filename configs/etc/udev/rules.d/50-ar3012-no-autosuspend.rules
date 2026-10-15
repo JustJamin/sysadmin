@@ -1,0 +1,5 @@
+# Keep the AR3012 Bluetooth adapter (0cf3:3004) out of USB runtime suspend.
+# The btusb enable_autosuspend=N modprobe option alone wasn't enough: after reboots
+# power/control came back as "auto" and the adapter sat suspended, so the home_state
+# scanner heard nothing (found 2026-10-15). This sets it on every enumeration.
+ACTION=="add|bind", SUBSYSTEM=="usb", ATTR{idVendor}=="0cf3", ATTR{idProduct}=="3004", TEST=="power/control", ATTR{power/control}="on"

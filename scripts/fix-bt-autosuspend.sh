@@ -2,7 +2,7 @@
 # Stop USB autosuspend on the AR3012 Bluetooth adapter (suspected cause of USB resets).
 # Applies live WITHOUT reloading btusb (scanner keeps running) + persists via modprobe.d.
 # Run with: sudo sh ~/repo/sysadmin/scripts/fix-bt-autosuspend.sh
-# Undo: sudo rm /etc/modprobe.d/btusb-no-autosuspend.conf; echo Y | sudo tee /sys/module/btusb/parameters/enable_autosuspend
+# Undo: sudo rm /etc/modprobe.d/btusb-no-autosuspend.conf /etc/udev/rules.d/50-ar3012-no-autosuspend.rules; echo Y | sudo tee /sys/module/btusb/parameters/enable_autosuspend
 set -eu
 [ "$(id -u)" -eq 0 ] || { echo "run with sudo" >&2; exit 1; }
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
@@ -12,8 +12,11 @@ dmesg -T | grep -iE 'btusb|usb 1-1\.3|hci0|bluetooth' | tail -30 || true
 echo "=== evidence: bluetooth service log"
 journalctl -u bluetooth --since -2d --no-pager | tail -20 || true
 
-# 1. Persist for future boots.
+# 1. Persist for future boots: the btusb option, plus a udev rule that keeps the
+#    adapter's power/control at "on" (the option alone didn't survive reboots).
 install -Dm644 "$REPO/configs/etc/modprobe.d/btusb-no-autosuspend.conf" /etc/modprobe.d/btusb-no-autosuspend.conf
+install -Dm644 "$REPO/configs/etc/udev/rules.d/50-ar3012-no-autosuspend.rules" /etc/udev/rules.d/50-ar3012-no-autosuspend.rules
+udevadm control --reload
 
 # 2. Live: future btusb probes (e.g. after a re-enumeration) won't enable autosuspend.
 echo N > /sys/module/btusb/parameters/enable_autosuspend
