@@ -41,6 +41,7 @@ Host setup needed by `~/repo/home_state` (BLE sensor boards → Postgres). That 
   - 2026-10-15: **the fix didn't survive reboots** (2026-10-08, 2026-10-10). `power/control` was back to `auto` (btusb param still N), and the adapter (now device 34) was `suspended`, with `runtime_suspended_time` at 114,150,533 ms (~31.7 h) at the check. The scanner heard no adverts at all, so it restarted ~309 times and stored nothing after 2026-10-14 01:46 UTC. Added udev rule `configs/etc/udev/rules.d/50-ar3012-no-autosuspend.rules` (power/control=on on every enumeration), installed by `fix-bt-autosuspend.sh`.
     - [x] Ran `fix-bt-autosuspend.sh` (2026-10-15 ~12:40 UTC): `power/control` on, `runtime_status` active. The adapter still received nothing (RX bytes flat) until `bluetoothctl power off` / `power on`, after which the scanner recovered (12:49 UTC). home_state v1.3.2 health checks now flag a deaf adapter and push an alert.
     - [ ] After the next reboot, check it's still `on`.
+    - home_state scanner (2026-10-15) now power-cycles the adapter itself over D-Bus when it hears nothing for 120 s, then restarts. Tested live: deaf -> stall -> power-cycle -> readings again in ~6 s.
 
 ## done
 - [x] Baseline audit — full machine snapshot 2026-09-26
