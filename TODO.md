@@ -39,7 +39,7 @@ Host setup needed by `~/repo/home_state` (BLE sensor boards → Postgres). That 
   - 2026-10-05: FIX APPLIED, watching. Found `btusb enable_autosuspend=Y`, adapter `power/control=auto` (2 s delay), `runtime_suspended_time=120060` ms → it was autosuspending. Applied live via `scripts/fix-bt-autosuspend.sh` (no btusb reload): param N, `power/control=on`, persisted in `/etc/modprobe.d/btusb-no-autosuspend.conf`.
   - Close when: no new re-enumeration (device stays 46 / hci0 not recreated) for a few days, and `runtime_suspended_time` stays at 120060.
   - 2026-10-15: **the fix didn't survive reboots** (2026-10-08, 2026-10-10). `power/control` was back to `auto` (btusb param still N), and the adapter (now device 34) was `suspended`, with `runtime_suspended_time` at 114,150,533 ms (~31.7 h) at the check. The scanner heard no adverts at all, so it restarted ~309 times and stored nothing after 2026-10-14 01:46 UTC. Added udev rule `configs/etc/udev/rules.d/50-ar3012-no-autosuspend.rules` (power/control=on on every enumeration), installed by `fix-bt-autosuspend.sh`.
-    - [ ] Run `sudo sh ~/repo/sysadmin/scripts/fix-bt-autosuspend.sh`, then check `cat /sys/bus/usb/devices/1-1.3/power/{control,runtime_status}` gives `on` / `active`.
+    - [x] Ran `fix-bt-autosuspend.sh` (2026-10-15 ~12:40 UTC): `power/control` on, `runtime_status` active. The adapter still received nothing (RX bytes flat) until `bluetoothctl power off` / `power on`, after which the scanner recovered (12:49 UTC). home_state v1.3.2 health checks now flag a deaf adapter and push an alert.
     - [ ] After the next reboot, check it's still `on`.
 
 ## done
