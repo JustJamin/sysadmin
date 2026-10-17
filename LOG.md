@@ -164,3 +164,7 @@
   - install-k3s.sh, README, MACHINE.md now point at `~/repo/cluster/k3s/`; installed host files unchanged, no k3s restart
   - `kubectl apply -k ~/repo/cluster/namespaces`: home-state got quota (576Mi/2112Mi used of 1536Mi/4Gi), new namespace sentek60 created; home_state pods unaffected
   - NodePort blocks: home_state 30300–30309, sentek60 30310–30319 (table in ~/repo/cluster/README.md)
+
+## 2026-10-17
+- Chromium 155 (Debian package) confirmed working headless for home_state screenshots (`--headless --timeout=6000 --screenshot=...`)
+  - emoji render as empty boxes: no colour emoji font. TODO added: `sudo apt install fonts-noto-color-emoji` (needs the user's sudo password)

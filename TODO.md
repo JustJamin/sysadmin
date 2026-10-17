@@ -29,6 +29,7 @@ Host setup needed by `~/repo/home_state` (BLE sensor boards → Postgres). That 
 - [x] k3s single-node — v1.36.5+k3s1, traefik + servicelb disabled, `local-path` default SC (2026-10-04; PVC + DNS test passed) (home_state step 5)
 - [x] Local image registry for k3s — `registry:2` on 127.0.0.1:5000, restart unless-stopped, volume `registry-data`, via `scripts/run-local-registry.sh` (2026-10-04; k3s pulled `localhost:5000/...` over plain HTTP with no registries.yaml needed) (home_state step 5)
 - [x] Tailscale HTTPS for the home_state provisioning dashboard — https://lenovo.tailc2dfa5.ts.net/ → http://127.0.0.1:30304 via `scripts/enable-tailscale-serve.sh` (2026-10-05; HTTP 200, Let's Encrypt cert, tailnet-only; NodePort 30304 kept) (home_state v1.1.0)
+- [ ] Colour emoji font for headless Chromium screenshots: `sudo apt install fonts-noto-color-emoji` (added 2026-10-17). Chromium 155 is already installed; without the font, emoji in home_state pages render as empty boxes in screenshots. (home_state screenshot checks)
 - [ ] Investigate AR3012 Bluetooth adapter USB resets. Around 2026-10-04 20:46 UTC it re-enumerated on USB (bus 1 device 13 → 34) and BlueZ recreated hci0.
   - Check `sudo dmesg -T | grep -iE "btusb|usb 1-1.3|hci0"` and `sudo journalctl -u bluetooth`.
   - Suspects: USB autosuspend (`btusb enable_autosuspend=0`) or AR3012 firmware.
