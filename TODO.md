@@ -6,7 +6,7 @@ Updated after every session. Oldest tasks first; current work at top.
 - [x] GitHub SSH auth — key generated + added to GitHub, `ssh -T git@github.com` now authenticates ("You've successfully authenticated")
   - [x] Create remote repo `JustJamin/sysadmin` on GitHub and add as origin
   - [x] Push local repo to origin (main branch)
-- [ ] Backup SSH key from a second device (phone is currently the only key)
+- [x] Backup SSH key from a second device — tuf laptop key added 2026-11-02
 - [ ] restic local repo + systemd timer
 - [ ] offsite backup backend (B2 / S3 / rsync.net)
 - [ ] restore test from backup

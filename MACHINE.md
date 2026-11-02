@@ -8,8 +8,9 @@
 - Swap: 5.9Gi
 - Location: moved 2026-10-05 — Wi-Fi "Morrison", LAN 10.132.242.9/24 (DHCP). wpa_supplicant.conf also knows VM1429985.
 - Tailscale: 100.79.164.117 (lenovo)
-- SSH: key-only (password + root login disabled, AllowUsers jamin) via /etc/ssh/sshd_config.d/10-hardening.conf; one key in authorized_keys = Termius on phone (SHA256:bMBcakii…)
-- Access: Tailscale + Termius from phone
+- SSH: key-only (password + root login disabled, AllowUsers jamin) via /etc/ssh/sshd_config.d/10-hardening.conf; two keys in authorized_keys: Termius on phone (SHA256:bMBcakii…) + tuf laptop (SHA256:YDRL+kPo…, added 2026-11-02 via Taildrop)
+- Access: Tailscale + Termius from phone, or `ssh jamin@100.79.164.117` from tuf
+- Tailscale operator = jamin (2026-11-02) — `tailscale file get`/serve etc. work without sudo
 - Firewall: ufw — deny incoming/routed, allow outgoing; allow all in on tailscale0 + 41641/udp. LAN (192.168.0.18) cannot reach SSH.
 - Updates: unattended-upgrades — Debian-Security + Tailscale daily (~06:00); auto-reboot 04:00 when required. Point releases + Node.js manual (`sudo apt update && sudo apt upgrade`).
 - Docker: docker.io 26.1.5 + compose 2.26.1 + buildx (Debian). /etc/docker/daemon.json: published ports default to 127.0.0.1, log-driver local. jamin in docker group (root-equivalent).
